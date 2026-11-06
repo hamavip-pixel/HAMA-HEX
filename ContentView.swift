@@ -180,12 +180,19 @@ struct ContentView: View {
                     .foregroundStyle(.white.opacity(0.4))
             }
             if data.isEmpty {
-                ContentUnavailableView(
-                    tr("No file loaded", "هیچ فایلێک نەکراوەتەوە"),
-                    systemImage: "doc.text.magnifyingglass",
-                    description: Text(tr("Tap Open File to inspect binary data.", "بۆ پشکنینی داتای باینەری، Open File بکە."))
-                )
-                .frame(minHeight: 180)
+                VStack(spacing: 12) {
+                    Image(systemName: "doc.text.magnifyingglass")
+                        .font(.system(size: 34))
+                        .foregroundStyle(red)
+                    Text(tr("No file loaded", "هیچ فایلێک نەکراوەتەوە"))
+                        .font(.headline)
+                        .foregroundStyle(.white)
+                    Text(tr("Tap Open File to inspect binary data.", "بۆ پشکنینی داتای باینەری، Open File بکە."))
+                        .font(.caption)
+                        .foregroundStyle(.white.opacity(0.55))
+                        .multilineTextAlignment(.center)
+                }
+                .frame(maxWidth: .infinity, minHeight: 180)
             } else {
                 ScrollView(.horizontal) {
                     VStack(alignment: .leading, spacing: 8) {
