@@ -1,0 +1,71 @@
+
+name: HAMA HEX iOS Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Create Xcode Project
+        run: |
+          cat > project.yml <<'EOF'
+          name: HAMAHex
+          options:
+            deploymentTarget:
+              iOS: "16.0"
+          settings:
+            base:
+              PRODUCT_BUNDLE_IDENTIFIER: com.hamavip.hamahex
+              SWIFT_VERSION: "5.0"
+              GENERATE_INFOPLIST_FILE: YES
+              INFOPLIST_KEY_CFBundleDisplayName: HAMA HEX
+          targets:
+            HAMAHex:
+              type: application
+              platform: iOS
+              sources:
+                - HAMAHexApp.swift
+                - ContentView.swift
+                - HexDocument.swift
+              settings:
+                base:
+                  PRODUCT_BUNDLE_IDENTIFIER: com.hamavip.hamahex
+          EOF
+
+          xcodegen generate
+
+      - name: Build iOS App
+        run: |
+          xcodebuild \
+            -project HAMAHex.xcodeproj \
+            -scheme HAMAHex \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+      - name: Package IPA
+        run: |
+          mkdir Payload
+          cp -R build/Build/Products/Release-iphoneos/HAMAHex.app Payload/
+          zip -r HAMA-HEX-unsigned.ipa Payload
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: HAMA-HEX-IPA
+          path: HAMA-HEX-unsigned.ipa
