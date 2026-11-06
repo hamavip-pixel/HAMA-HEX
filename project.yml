@@ -1,0 +1,27 @@
+name: HamaCodex
+options:
+  bundleIdPrefix: com.hamavip
+  deploymentTarget:
+    iOS: "16.0"
+packages:
+  ZIPFoundation:
+    url: https://github.com/weichsel/ZIPFoundation.git
+    from: 0.9.19
+targets:
+  HamaCodex:
+    type: application
+    platform: iOS
+    deploymentTarget: "16.0"
+    sources:
+      - HamaCodex
+      - Assets.xcassets
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.hamavip.hamacodex
+        PRODUCT_NAME: HAMA CODEX
+        SWIFT_VERSION: "5.0"
+        TARGETED_DEVICE_FAMILY: "1,2"
+        INFOPLIST_KEY_CFBundleDisplayName: "HAMA CODEX"
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+    dependencies:
+      - package: ZIPFoundation
