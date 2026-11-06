@@ -1,10 +1,11 @@
 
-name: HamaCodex
+name: HAMA-CODEX
 
 options:
-  bundleIdPrefix: com.hamavip
+  bundleIdPrefix: com.hama
   deploymentTarget:
     iOS: "16.0"
+  createIntermediateGroups: true
 
 packages:
   ZIPFoundation:
@@ -12,23 +13,26 @@ packages:
     from: 0.9.19
 
 targets:
-  HamaCodex:
+  HAMA-CODEX:
     type: application
     platform: iOS
-    deploymentTarget: "16.0"
-
     sources:
-      - HamaCodex
-      - Assets.xcassets
+      - path: HamaCodex
+      - path: Assets.xcassets
+        buildPhase: resources
 
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.hamavip.hamacodex
-        PRODUCT_NAME: "HAMA CODEX"
-        SWIFT_VERSION: "5.0"
+        PRODUCT_BUNDLE_IDENTIFIER: com.hama.codex
+        PRODUCT_NAME: HAMA CODEX
+        SWIFT_VERSION: 5.0
         TARGETED_DEVICE_FAMILY: "1,2"
-        INFOPLIST_KEY_CFBundleDisplayName: "HAMA CODEX"
+        IPHONEOS_DEPLOYMENT_TARGET: "16.0"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        INFOPLIST_KEY_CFBundleDisplayName: HAMA CODEX
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        GENERATE_INFOPLIST_FILE: YES
+        CODE_SIGNING_ALLOWED: NO
 
     dependencies:
       - package: ZIPFoundation
