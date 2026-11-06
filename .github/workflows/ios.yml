@@ -1,0 +1,40 @@
+
+name: HAMA CODEX iOS Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode Project
+        run: xcodegen generate
+
+      - name: Build iOS App
+        run: |
+          xcodebuild \
+            -project HamaCodex.xcodeproj \
+            -scheme HamaCodex \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+      - name: Upload Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: HAMA-CODEX-Build
+          path: ~/Library/Developer/Xcode/DerivedData/**/Build/Products/Release-iphoneos/
+          if-no-files-found: error
